@@ -7,4 +7,9 @@ inline void PUT16(unsigned int address,unsigned int data){
 inline void PUT8(unsigned int address,unsigned int data){
 	asm volatile("strb %[data],[%[address]]":: [data] "r" (data), [address] "r" (address));
 }
+inline unsigned int get32(unsigned int register address){
+	unsigned int register data;
+	asm volatile("ldr %[data],[%[address]]":[data] "=r" (data):[address] "r" (address): "r0");
+	return data;
+}
 
