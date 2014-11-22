@@ -128,3 +128,30 @@ DrawChar:
 	pop {r4,r5,r6,r7,r8,pc}
 	.unreq width
 	.unreq height
+
+
+.globl ClearScreen
+ClearScreen:
+	push {r4,r5}
+	color .req r0
+	i .req r1
+	j .req r2
+	mov r3,color
+	lsl r3,#16
+	mov color,r3
+	ldr r4,=0x40040020
+	ldr r3,[r4]
+	address .req r3
+	mov j,#480
+	jloop$:
+		mov i,#0 @store word not halfword
+		iloop$:
+			str color,[address]
+			add address,#4
+			add i,i,#1
+			cmp i,#320
+			beq iloop$
+		sub j,#1
+		bne jloop$
+	
+	pop {r4,r5}
