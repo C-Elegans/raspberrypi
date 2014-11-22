@@ -88,8 +88,7 @@ inline void put32(unsigned int address,unsigned int data){
 //------------------------------------------------------------------------
 int notmain ( void )
 {
-    unsigned int ra,rb;
-    unsigned int ry,rx;
+
 
     uart_init();
     timer_init();
@@ -108,15 +107,12 @@ int notmain ( void )
 
     MailboxWrite(0x40040000,1);
     MailboxRead(1);
-    rb=0x40040000;
+    //rb=0x40040000;
     int i;
-    for(i=0; i<640; i++){
-    	multiplylookup[i] = i * 640;
-    }
+    
 
     
-    ra=0;
-    rb=GET32(0x40040020);
+    
     //int x1, y1,x2,y2,color;
     //color = Random(53);
     drawLine(540,35,104,323,0b1111100000000000);
@@ -124,8 +120,7 @@ int notmain ( void )
     clrScreen(0x0000);
     uart_puts("timestamp: ");
     int timestamp;
-    int color;
-    int register addr;
+    
     for(i = 0; i<10; i++){
     //while(1){
     timestamp = GetTimeStamp();
@@ -133,12 +128,13 @@ int notmain ( void )
     //drawTriangle(300,0, 0, 479, 639, 479, 0xF000 );
    	//drawRect(50,50,300,300,0xF000);
     //drawTriangle(x0,y0,x1,y1,x2,y2,color);
-    addr=GET32(0x40040020);
-    
+    clrScreen(0b1111100000000000);
+	    
     hexstring(GetTimeStamp()-timestamp);
-    
+    clrScreen(0x0000);
 	}
-	drawRect(50,50,300,300,0xF000);
+	clrScreen(0b1111100000000000);
+	//drawRect(50,50,300,300,0xF000);
 	uart_puts("\r\n");
 	WaitMicros(5000);
     return(0);

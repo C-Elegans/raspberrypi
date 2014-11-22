@@ -4,4 +4,4 @@ raspberrypi/
 *.bin
 *.hex
 *.img
-kernel.img
+video01/kernel.img

@@ -26,14 +26,18 @@ void clrScreen(int color){
 	int register address;
 	color = color | (color << 16);
 	address=GET32(0x40040020);
-	for(i=480; i!=0;i--){
-		for(j=80; j!=0; j--){
+	for(i=19200; i!=0;i--){
+		
 			asm volatile("str %[color],[%[address]]":: [color] "r" (color), [address] "r" (address));
 			asm volatile("str %[color],[%[address], #4]":: [color] "r" (color), [address] "r" (address));
 			asm volatile("str %[color],[%[address], #8]":: [color] "r" (color), [address] "r" (address));
 			asm volatile("str %[color],[%[address], #12]":: [color] "r" (color), [address] "r" (address));
-			address +=16;
-		}
+			asm volatile("str %[color],[%[address], #16]":: [color] "r" (color), [address] "r" (address));
+			asm volatile("str %[color],[%[address], #20]":: [color] "r" (color), [address] "r" (address));
+			asm volatile("str %[color],[%[address], #24]":: [color] "r" (color), [address] "r" (address));
+			asm volatile("str %[color],[%[address], #28]":: [color] "r" (color), [address] "r" (address));
+			address +=32;
+		
 	}
 }
 void inline setPixel(int x,int y, int color){
