@@ -1,5 +1,4 @@
 /* display.c */
-void clrScreen(int color);
 void setPixel(int x, int y, int color);
 void drawLine(int x0, int y0, int x1, int y1, unsigned int color);
 void drawString(char str[], int x, int y);
