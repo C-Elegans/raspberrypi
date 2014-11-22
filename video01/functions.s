@@ -132,38 +132,48 @@ DrawChar:
 
 .globl ClearScreen
 ClearScreen:
-	push {r0,r1,r2,r3,r4,r5,r6,r7,lr}
-	mov r4,r0
-	color .req r4
-	color2 .req r5
-	color3 .req r6
-	color4 .req r7
-	i .req r0
-	j .req r1
-	mov r2,color
-	lsl r2,#16
-	orr color,r2
+	push {r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,lr}
+	mov r3,r0
+	color .req r3
+	color2 .req r4
+	color3 .req r5
+	color4 .req r6
+	color5 .req r7
+	color6 .req r8
+	color7 .req r9
+	color8 .req r10
+	j .req r0
+	mov r1,color
+	lsl r1,#16
+	orr color,r1
 	mov color2,color
 	mov color3,color
 	mov color4,color
-	ldr r3,=0x40040020
-	ldr r2,[r3]
-	address .req r2
+	mov color5,color
+	mov color6,color
+	mov color7,color
+	mov color8,color
+	ldr r2,=0x40040020
+	ldr r1,[r2]
+	address .req r1
 	
-	mov j,#480
+	
+	ldr j,=2400
 	jloop$:
-		mov i,#20 @store word not halfword
-		iloop$:
-			@strd color,color2,[address]
-			stmia address!, {color,color2,color3,color4}
-			stmia address!, {color,color2,color3,color4}
-			stmia address!, {color,color2,color3,color4}
-			stmia address!, {color,color2,color3,color4}
-			@add address,#16
-			subs i,#1
+		
 			
-			bne iloop$
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			
+			
+			
 		subs j,#1
 		bne jloop$
 	
-	pop {r0,r1,r2,r3,r4,r5,r6,r7,pc}
+	pop {r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,pc}

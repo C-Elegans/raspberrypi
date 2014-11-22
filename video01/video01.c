@@ -133,7 +133,7 @@ int notmain ( void )
     hexstring(GetTimeStamp()-timestamp);
     ClearScreen(0x0000);
 	}
-	ClearScreen(0b1111100000000000);
+	
 	//drawRect(50,50,300,300,0xF000);
 	uart_puts("\r\n");
 	WaitMicros(5000);
