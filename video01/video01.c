@@ -128,12 +128,12 @@ int notmain ( void )
     //drawTriangle(300,0, 0, 479, 639, 479, 0xF000 );
    	//drawRect(50,50,300,300,0xF000);
     //drawTriangle(x0,y0,x1,y1,x2,y2,color);
-    clrScreen(0b1111100000000000);
+    ClearScreen(0b1111100000000000);
 	    
     hexstring(GetTimeStamp()-timestamp);
-    clrScreen(0x0000);
+    ClearScreen(0x0000);
 	}
-	clrScreen(0b1111100000000000);
+	
 	//drawRect(50,50,300,300,0xF000);
 	uart_puts("\r\n");
 	WaitMicros(5000);

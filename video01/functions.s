@@ -128,3 +128,52 @@ DrawChar:
 	pop {r4,r5,r6,r7,r8,pc}
 	.unreq width
 	.unreq height
+
+
+.globl ClearScreen
+ClearScreen:
+	push {r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,lr}
+	mov r3,r0
+	color .req r3
+	color2 .req r4
+	color3 .req r5
+	color4 .req r6
+	color5 .req r7
+	color6 .req r8
+	color7 .req r9
+	color8 .req r10
+	j .req r0
+	mov r1,color
+	lsl r1,#16
+	orr color,r1
+	mov color2,color
+	mov color3,color
+	mov color4,color
+	mov color5,color
+	mov color6,color
+	mov color7,color
+	mov color8,color
+	ldr r2,=0x40040020
+	ldr r1,[r2]
+	address .req r1
+	
+	
+	ldr j,=2400
+	jloop$:
+		
+			
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			stmia address!, {color,color2,color3,color4,color5,color6,color7,color8}
+			
+			
+			
+		subs j,#1
+		bne jloop$
+	
+	pop {r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,pc}
