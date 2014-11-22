@@ -22,6 +22,8 @@ clean :
 gdb:
 	$(ARMGNU)-gdb --tui -x gdbscript
 
+io.o:io.c io.h
+	$(ARMGNU)-gcc $(COPS) -c io.c -o io.o
 vectors.o : vectors.s vectors.h
 	$(ARMGNU)-as $(ASOPS) vectors.s -o vectors.o
 
@@ -42,8 +44,8 @@ terminal.o: terminal.c
 display.o: display.c
 	$(ARMGNU)-gcc $(COPS) -c display.c -o display.o
 
-kernel.img : loader vectors.o periph.o video01.o functions.o timer.o terminal.o display.o $(DEPS) Makefile
-	$(ARMGNU)-ld vectors.o periph.o video01.o functions.o timer.o terminal.o display.o $(LDFLAGS) -T loader -o video01.elf
+kernel.img : loader vectors.o periph.o video01.o functions.o timer.o terminal.o display.o io.o $(DEPS) Makefile
+	$(ARMGNU)-ld vectors.o periph.o video01.o functions.o timer.o terminal.o display.o io.o $(LDFLAGS) -T loader -o video01.elf
 	$(ARMGNU)-objdump -D video01.elf > video01.list
 	$(ARMGNU)-objcopy video01.elf -O ihex video01.hex
 	$(ARMGNU)-objcopy video01.elf -O binary kernel.img

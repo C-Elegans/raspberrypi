@@ -1,6 +1,4 @@
-inline void PUT32 ( unsigned int, unsigned int );
-inline void PUT16 ( unsigned int, unsigned int );
-inline void PUT8 ( unsigned int, unsigned int );
+#include "io.h"
 inline unsigned int GET32 ( unsigned int );
 inline unsigned int GETPC ( void );
 void BRANCHTO ( unsigned int );

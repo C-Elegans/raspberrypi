@@ -134,11 +134,7 @@ int notmain ( void )
    	//drawRect(50,50,300,300,0xF000);
     //drawTriangle(x0,y0,x1,y1,x2,y2,color);
     addr=GET32(0x40040020);
-    int j;
-    for(j=1000000;j!=0;j--){
-    	put32(addr,0xFFFF);
     
-    }
     hexstring(GetTimeStamp()-timestamp);
     
 	}
