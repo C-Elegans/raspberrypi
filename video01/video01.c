@@ -130,10 +130,7 @@ int notmain ( void )
     //drawTriangle(x0,y0,x1,y1,x2,y2,color);
     //clrScreen(0b1111100000000000);
 	int j;
-	int volatile data;
-	for(j=1000000;j!=0;j--){
-	data = GET32(0x40040020);
-	}
+	
     hexstring(GetTimeStamp()-timestamp);
     clrScreen(0x0000);
 	}
