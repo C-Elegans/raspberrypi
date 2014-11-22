@@ -132,26 +132,31 @@ DrawChar:
 
 .globl ClearScreen
 ClearScreen:
-	push {r4,r5}
+	push {r0,r1,r2,r3,r4,r5,lr}
 	color .req r0
-	i .req r1
-	j .req r2
-	mov r3,color
-	lsl r3,#16
-	mov color,r3
-	ldr r4,=0x40040020
-	ldr r3,[r4]
-	address .req r3
+	color2 .req r1
+	
+	i .req r2
+	j .req r3
+	mov r4,color
+	lsl r4,#16
+	orr color,r4
+	mov color2,color
+	ldr r5,=0x40040020
+	ldr r4,[r5]
+	address .req r4
+	
 	mov j,#480
 	jloop$:
-		mov i,#0 @store word not halfword
+		mov i,#160 @store word not halfword
 		iloop$:
-			str color,[address]
-			add address,#4
-			add i,i,#1
-			cmp i,#320
-			beq iloop$
-		sub j,#1
+			strd color,color2,[address]
+			
+			add address,#16
+			subs i,#1
+			
+			bne iloop$
+		subs j,#1
 		bne jloop$
 	
-	pop {r4,r5}
+	pop {r0,r1,r2,r3,r4,r5,pc}
