@@ -115,27 +115,22 @@ int notmain ( void )
     
     //int x1, y1,x2,y2,color;
     //color = Random(53);
-    drawLine(540,35,104,323,0b1111100000000000);
+    //drawLine(540,35,104,323,0b1111100000000000);
     //int offset, i;
     clrScreen(0x0000);
-    uart_puts("timestamp: ");
+    //uart_puts("timestamp: ");
     int timestamp;
-    
-    for(i = 0; i<10; i++){
-    //while(1){
-    timestamp = GetTimeStamp();
-   	
-    //drawTriangle(300,0, 0, 479, 639, 479, 0xF000 );
-   	//drawRect(50,50,300,300,0xF000);
-    //drawTriangle(x0,y0,x1,y1,x2,y2,color);
-    //clrScreen(0b1111100000000000);
-	int j;
-	
-    hexstring(GetTimeStamp()-timestamp);
-    clrScreen(0x0000);
+    for(i=0;i<10;i++){
+    	timestamp = GetTimeStamp();
+    	drawFilledRect(50,50,300,300,0xFFFF);
+		hexstring(GetTimeStamp()-timestamp);
+		//clrScreen(0x00);
 	}
+    
+    
 	
-	//drawRect(50,50,300,300,0xF000);
+	//drawFastFilledRect(200,100,50,200,0xFFFF);
+	//drawRect(200,100,50,200,0xF000);
 	uart_puts("\r\n");
 	WaitMicros(5000);
     return(0);
