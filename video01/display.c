@@ -180,7 +180,7 @@ void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color){
     	cx2 = cy2;
     	cx3 = cy3;
     	for(i = xmax-xmin; i!=0; i--){
-    		if(cx1 >=0 ){//&& cx2 >=0 && cx3 >0){
+    		if(cx1 >=0 && cx2 >=0 && cx3 >0){
     			PUT16(address,color);
     		}
     		address += 2;
