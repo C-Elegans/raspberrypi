@@ -8,3 +8,4 @@ inline void PUT8(unsigned int address,unsigned int data){
 	asm volatile("strb %[data],[%[address]]":: [data] "r" (data), [address] "r" (address));
 }
 
+

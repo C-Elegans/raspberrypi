@@ -21,22 +21,7 @@ static inline unsigned int max(unsigned int a, unsigned int b, unsigned int c)
     return m;
 }
 
-void clrScreen(int color){
-	int i,j;
-	int register color2;
-	color2 = color;
-	int register address;
-	color = color | (color << 16);
-	address=GET32(0x40040020);
-	asm volatile("mov r5,%[color]":: [color] "r" (color): "r5");
-	for(i=480; i!=0;i--){
-		for(j=160; j!=0; j--){
-			//asm volatile("str %[color],[%[address]]":: [color] "r" (color), [address] "r" (address));
-			//asm volatile("stmia %[address]!, {r3,r4}"::[color] "r" (color), [address] "r" (address));
-			address +=4;
-		}
-	}
-}
+
 void inline setPixel(int x,int y, int color){
 	if(x<640 && y<480){
 	int offset;
@@ -98,7 +83,7 @@ void drawString(char str[], int x, int y){
 		i++;
 	}
 }
-void drawRect(int x, int y, int width, int height, int color){
+void drawFilledRect(int x, int y, int width, int height, int color){
 	unsigned int i,j;
 	
 		for(j= y+height; j >= y; j--){
@@ -109,6 +94,45 @@ void drawRect(int x, int y, int width, int height, int color){
 	
 	
 
+}
+void drawFastFilledRect(int x, int y, int width, int height, int color){
+	int i,j,address;
+	address = GET32(0x40040020);
+	address += (x+(y*640))<<1;
+	for(j=y; j<y+height;j++){
+		for(i=x;i<x+width;i++){
+			PUT16(address,color);
+			address +=2;
+		}
+	address += 1280 - (width<<1);
+	}
+}
+void drawRect(int x, int y, int width, int height, int color){
+	int i,address;
+	address = GET32(0x40040020);
+	address += (x+(y*640)) <<1;
+	for(i = x; i<x+width;i++){
+		PUT16(address,color);
+		address +=2;
+	}
+	address = GET32(0x40040020);
+	address += (x+((y+height)*640)) <<1;
+	for(i = x; i<=x+width;i++){
+		PUT16(address,color);
+		address +=2;
+	}
+	address = GET32(0x40040020);
+	address += (x+(y*640)) <<1;
+	for(i=y; i<y+height; i++){
+		PUT16(address,color);
+		address += 1280; //640 * length of color (2)
+	}
+	address = GET32(0x40040020);
+	address += ((x+width)+(y*640)) <<1;
+	for(i=y; i<=y+height; i++){
+		PUT16(address,color);
+		address += 1280; //640 * length of color (2)
+	}
 }
 void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color){
 	x1 = x1 & 1023;

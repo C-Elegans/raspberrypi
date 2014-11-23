@@ -130,8 +130,8 @@ DrawChar:
 	.unreq height
 
 
-.globl ClearScreen
-ClearScreen:
+.globl clrScreen
+clrScreen:
 	push {r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,lr}
 	mov r3,r0
 	color .req r3
