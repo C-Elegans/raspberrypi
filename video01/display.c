@@ -170,18 +170,26 @@ void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color){
     cy2 = c2 + x23 * ymin - y23 * xmin;
     cy3 = c3 + x31 * ymin - y31 * xmin;
     int i,j, cx1, cx2, cx3;
-    for(j = ymin; j<ymax; j++){
+    int address;
+    address = GET32(0x40040020);
+	address += (xmin+(ymin*640)) <<1;
+	int dx;
+	dx = 1280-((xmax-xmin)<<1);
+    for(j = ymax-ymin; j!=0; j--){
     	cx1 = cy1;
     	cx2 = cy2;
     	cx3 = cy3;
-    	for(i = xmin; i<xmax; i++){
-    		if(cx1 >=0 && cx2 >=0 && cx3 >0){
-    		setPixel(i,j,color);
+    	for(i = xmax-xmin; i!=0; i--){
+    		if(cx1 >=0 ){//&& cx2 >=0 && cx3 >0){
+    			PUT16(address,color);
     		}
+    		address += 2;
     		cx1 -= y12;
     		cx2 -= y23;
     		cx3 -= y31;
+    		
     	}
+    	address += dx;
     cy1 += x12;
     cy2 += x23;
     cy3 += x31;
