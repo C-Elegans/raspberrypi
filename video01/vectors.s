@@ -7,6 +7,7 @@ _start:
     mov sp,#0x8000
     bl notmain
     mov r0, #0x200000
+    nop
     bx r0
 hang: b hang
 
