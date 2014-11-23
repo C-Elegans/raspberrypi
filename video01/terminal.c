@@ -1,6 +1,6 @@
 #include "periph.h"
 #include "display.h"
-
+#include "string.h"
  int strcmp(const char *cs, const char *ct)
 {
          unsigned char c1, c2;

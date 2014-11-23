@@ -1,7 +1,7 @@
 
 ARMGNU ?= arm-none-eabi
 
-COPS = -Wall -O2 -nostdlib -nostartfiles -ffreestanding -ffunction-sections -fdata-sections -ggdb3 
+COPS = -Wall -O2 -nostdlib -nostartfiles -ffreestanding -ffunction-sections -fdata-sections 
 ASOPS = -ggdb3
 LDFLAGS=-L ~/bin/yagarto-4.7.2/lib/gcc/arm-none-eabi/4.7.2/ -lgcc 
 gcc : kernel.img
@@ -39,13 +39,13 @@ video01.o : video01.c image_data.h
 periph.o : periph.c
 	$(ARMGNU)-gcc $(COPS) -c periph.c -o periph.o
 
-terminal.o: terminal.c
-	$(ARMGNU)-gcc $(COPS) -c terminal.c -o terminal.o
+#terminal.o: terminal.c
+#	$(ARMGNU)-gcc $(COPS) -c terminal.c -o terminal.o
 display.o: display.c
 	$(ARMGNU)-gcc $(COPS) -c display.c -o display.o
 
-kernel.img : loader vectors.o periph.o video01.o functions.o timer.o terminal.o display.o io.o $(DEPS) Makefile
-	$(ARMGNU)-ld vectors.o periph.o video01.o functions.o timer.o terminal.o display.o io.o $(LDFLAGS) -T loader -o video01.elf
+kernel.img : loader vectors.o periph.o video01.o functions.o timer.o display.o io.o $(DEPS) Makefile
+	$(ARMGNU)-ld vectors.o periph.o video01.o functions.o timer.o display.o io.o $(LDFLAGS) -T loader -o video01.elf
 	$(ARMGNU)-objdump -D video01.elf > video01.list
 	$(ARMGNU)-objcopy video01.elf -O ihex video01.hex
 	$(ARMGNU)-objcopy video01.elf -O binary kernel.img
