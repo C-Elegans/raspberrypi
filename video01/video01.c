@@ -122,7 +122,7 @@ int notmain ( void )
     int timestamp;
     for(i=0;i<10;i++){
     	timestamp = GetTimeStamp();
-    	drawFilledRect(50,50,300,300,0xFFFF);
+    	drawTriangle(300,0,0,479,639,479,0xFFFF);
 		hexstring(GetTimeStamp()-timestamp);
 		//clrScreen(0x00);
 	}
