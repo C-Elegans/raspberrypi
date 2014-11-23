@@ -101,7 +101,7 @@ clrScreen:
 	address .req r1
 	
 	
-	ldr j,=2400
+	ldr j,=4800
 	jloop$:
 		
 			

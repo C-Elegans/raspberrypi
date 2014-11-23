@@ -85,17 +85,17 @@ inline void put32(unsigned int address,unsigned int data){
 	asm volatile("str %[data],[%[address]]":: [data] "r" (data), [address] "r" (address));
 }
 
-	void setBuffer(int buf){
+	void sety(int y){
 	
-	PUT32(0x40040000, 1280); /* #0 Physical Width */
+	PUT32(0x40040000, 640); /* #0 Physical Width */
     PUT32(0x40040004, 480); /* #4 Physical Height */
     PUT32(0x40040008, 640); /* #8 Virtual Width */
     PUT32(0x4004000C, 960); /* #12 Virtual Height */
     PUT32(0x40040010, 0); /* #16 GPU - Pitch */
     PUT32(0x40040014, 16); /* #20 Bit Depth */
-    PUT32(0x40040018, 0);
-    if(buf == 1)PUT32(0x4004001C, 640); /* #24 X */
-    else PUT32(0x4004001C,0);
+    PUT32(0x40040018, 0); 	//x
+    
+    PUT32(0x4004001C,y); //y
     //PUT32(0x4004001C, 0); /* #28 Y */
     PUT32(0x40040020, 0); /* #32 GPU - Pointer */
     PUT32(0x40040024, 0); /* #36 GPU - Size */
@@ -103,7 +103,7 @@ inline void put32(unsigned int address,unsigned int data){
 
     MailboxWrite(0x40040000,1);
     MailboxRead(1);
-    hexstring(GET32(0x40040020));
+    
 }
 
 //------------------------------------------------------------------------
@@ -114,20 +114,8 @@ int notmain ( void )
     uart_init();
     timer_init();
 
-    PUT32(0x40040000, 640); /* #0 Physical Width */
-    PUT32(0x40040004, 480); /* #4 Physical Height */
-    PUT32(0x40040008, 640); /* #8 Virtual Width */
-    PUT32(0x4004000C, 960); /* #12 Virtual Height */
-    PUT32(0x40040010, 0); /* #16 GPU - Pitch */
-    PUT32(0x40040014, 16); /* #20 Bit Depth */
-    PUT32(0x40040018, 0); /* #24 X */
-    PUT32(0x4004001C, 0); /* #28 Y */
-    PUT32(0x40040020, 0); /* #32 GPU - Pointer */
-    PUT32(0x40040024, 0); /* #36 GPU - Size */
-
-
-    MailboxWrite(0x40040000,1);
-    MailboxRead(1);
+    sety(480);
+    hexstring(GET32(0x40040024));
     //rb=0x40040000;
     int i;
     
@@ -139,12 +127,11 @@ int notmain ( void )
     //drawLine(540,35,104,323,0b1111100000000000);
     //int offset, i;
     clrScreen(0x0000);
-    uart_puts("timestamp: ");
+    //uart_puts("timestamp: ");
     
     
     
-	drawFastFilledRect(200,100,50,200,0x3);
-	
+	clrScreen(0xF000);
 	//drawRect(200,100,50,200,0xF000);
 	uart_puts("\r\n");
 	WaitMicros(5000);
