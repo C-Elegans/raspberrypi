@@ -114,7 +114,7 @@ int notmain ( void )
     uart_init();
     timer_init();
 
-    sety(480);
+    sety(0);
     hexstring(GET32(0x40040024));
     //rb=0x40040000;
     int i;
@@ -126,12 +126,16 @@ int notmain ( void )
     //color = Random(53);
     //drawLine(540,35,104,323,0b1111100000000000);
     //int offset, i;
-    clrScreen(0x0000);
+    clrScreen(0x0000,0);
     //uart_puts("timestamp: ");
     
     
     
-	clrScreen(0xF000);
+	clrScreen(0xF000, 1);
+	for(i=0;i<480;i++){
+		sety(i);
+		WaitMicros(10000);
+	}
 	//drawRect(200,100,50,200,0xF000);
 	uart_puts("\r\n");
 	WaitMicros(5000);

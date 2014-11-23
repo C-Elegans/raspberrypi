@@ -75,7 +75,8 @@ Random:
 
 .globl clrScreen
 clrScreen:
-	push {r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,lr}
+	push {r4,r5,r6,r7,r8,r9,r10,lr}
+	push {r1}
 	mov r3,r0
 	color .req r3
 	color2 .req r4
@@ -99,9 +100,12 @@ clrScreen:
 	ldr r2,=0x40040020
 	ldr r1,[r2]
 	address .req r1
+	pop {r2}
+	cmp r2,#0
+	ldrhi r2,=614400
+	addhi address, r2
 	
-	
-	ldr j,=4800
+	ldr j,=2400
 	jloop$:
 		
 			
@@ -127,4 +131,4 @@ clrScreen:
 	.unreq color7
 	.unreq color8
 	.unreq j
-	pop {r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,pc}
+	pop {r4,r5,r6,r7,r8,r9,r10,pc}
