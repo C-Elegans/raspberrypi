@@ -105,7 +105,28 @@ inline void put32(unsigned int address,unsigned int data){
     MailboxRead(1);
     
 }
+	void setfb(int fb){
+	
+	PUT32(0x40040000, 640); /* #0 Physical Width */
+    PUT32(0x40040004, 480); /* #4 Physical Height */
+    PUT32(0x40040008, 640); /* #8 Virtual Width */
+    PUT32(0x4004000C, 960); /* #12 Virtual Height */
+    PUT32(0x40040010, 0); /* #16 GPU - Pitch */
+    PUT32(0x40040014, 16); /* #20 Bit Depth */
+    PUT32(0x40040018, 0); 	//x
+    if (fb){
+    PUT32(0x4004001C,480);
+    } //y
+    else PUT32(0x4004001C,0);
+    //PUT32(0x4004001C, 0); /* #28 Y */
+    PUT32(0x40040020, 0); /* #32 GPU - Pointer */
+    PUT32(0x40040024, 0); /* #36 GPU - Size */
+	
 
+    MailboxWrite(0x40040000,1);
+    MailboxRead(1);
+    
+}
 //------------------------------------------------------------------------
 int notmain ( void )
 {
@@ -118,8 +139,8 @@ int notmain ( void )
     hexstring(GET32(0x40040024));
     //rb=0x40040000;
     int i;
-    
-
+    int fb;
+	fb = 0;
     
     
     //int x1, y1,x2,y2,color;
@@ -127,18 +148,42 @@ int notmain ( void )
     //drawLine(540,35,104,323,0b1111100000000000);
     //int offset, i;
     clrScreen(0x0000,0);
+    clrScreen(0,1);
     //uart_puts("timestamp: ");
     
     
     
-	clrScreen(0xF000, 1);
-	for(i=0;i<480;i++){
-		sety(i);
-		WaitMicros(10000);
+	//clrScreen(0xF000, 1);
+	//drawFastFilledRect(50,50,300,300,0xF000,0);
+	#define RECTSIZE 75
+	#define STEP 2
+	int x,y,dx,dy;
+	x=0;
+	y=0;
+	dx = 1;
+	dy = 1;
+	while(1){
+		clrScreen(0x0,fb);
+		drawFastFilledRect(x,y,RECTSIZE,RECTSIZE,0xFFFF,fb);
+		//else drawFastFilledRect(i,250,100,100,0xF000,fb);
+		//WaitMicros(500000);
+		setfb(fb);
+		WaitMicros(15000);
+		fb = 1 ^ fb;
+		if(x>=638-RECTSIZE) dx=-STEP;
+		if(x<=1) dx=STEP;
+		if(y>=478 - RECTSIZE) dy=-STEP;
+		if(y<=1) dy=STEP;
+		
+		x+=	dx;
+		y+= dy;
+		i++;
+		//hexstring(fb);
 	}
+	
 	//drawRect(200,100,50,200,0xF000);
 	uart_puts("\r\n");
-	WaitMicros(5000);
+	//WaitMicros(5000);
     return(0);
 }
 //-------------------------------------------------------------------------

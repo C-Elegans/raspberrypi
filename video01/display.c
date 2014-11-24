@@ -23,16 +23,17 @@ static inline unsigned int max(unsigned int a, unsigned int b, unsigned int c)
 }
 
 
-void inline setPixel(int x,int y, int color){
+void inline setPixel(int x,int y, int color, int fb){
 	if(x<640 && y<480){
 	int offset;
 	offset = GET32(0x40040020);
 	offset += (x + (y*640))<<1;	
+	if (fb) offset += 614400;
 	color = color & 0xFFFF;
 	PUT16(offset, color);
 	}
 }
-void drawLine(int x0, int y0, int x1, int y1, unsigned int color) {
+void drawLine(int x0, int y0, int x1, int y1, unsigned int color, int fb) {
 	if(x0 > 640){x0-=640;}
 	if(x1 > 640){x1-=640;}
 	if(y0 > 480){y0-=480;}
@@ -43,7 +44,7 @@ void drawLine(int x0, int y0, int x1, int y1, unsigned int color) {
 		err = (dx>dy ? dx : -dy)/2;
 
 		for(;;){
-			setPixel(x0,y0,color);
+			setPixel(x0,y0,color, fb);
 			if (x0==x1 && y0==y1) break;
 			e2 = err;
 			if (e2 >-dx) { err -= dy; x0 += sx; }
@@ -52,22 +53,24 @@ void drawLine(int x0, int y0, int x1, int y1, unsigned int color) {
 	
 }
 
-void drawFilledRect(int x, int y, int width, int height, int color){
+/*void drawFilledRect(int x, int y, int width, int height, int color, int fb){
 	unsigned int i,j;
 	
 		for(j= y+height; j >= y; j--){
 			for(i= x+width; i>= x; i--){
-				setPixel(i,j,color);
+				setPixel(i,j,color, fb);
 			}
 		}
 	
 	
 
-}
-void drawFastFilledRect(int x, int y, int width, int height, int color){
+}*/
+void drawFastFilledRect(int x, int y, int width, int height, int color, int fb){
 	int i,j,address;
 	address = GET32(0x40040020);
+	if (fb) address += 614400;
 	address += (x+(y*640))<<1;
+	
 	for(j=y; j<y+height;j++){
 		for(i=x;i<x+width;i++){
 			PUT16(address,color);
@@ -76,10 +79,12 @@ void drawFastFilledRect(int x, int y, int width, int height, int color){
 	address += 1280 - (width<<1);
 	}
 }
-void drawRect(int x, int y, int width, int height, int color){
+void drawRect(int x, int y, int width, int height, int color, int fb){
 	int i,address;
 	address = GET32(0x40040020);
+	if (fb) address += 614400;
 	address += (x+(y*640)) <<1;
+	
 	for(i = x; i<x+width;i++){
 		PUT16(address,color);
 		address +=2;
